@@ -5,4 +5,4 @@ compatibility_date = "2024-09-09"
 [[durable_objects.bindings]]
 name = "MY_DURABLE_OBJECT"
 class_name = "MyDurableObject"
-# script_name = "../create-do/src/index.ts"
+script_name = "create-do"
