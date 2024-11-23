@@ -1,14 +1,13 @@
-import type { MyDurableObject } from '../../do1/src'
+import MyDOWorker from '../../do1/src/index'
 
-export interface Env {
-  MY_DURABLE_OBJECT: DurableObjectNamespace<MyDurableObject>
+interface Env {
+	MY_DO_WORKER: Service<MyDOWorker>;
 }
 
 export default {
   async fetch(request, env, ctx): Promise<Response> {
-    let id: DurableObjectId = env.MY_DURABLE_OBJECT.idFromName(new URL(request.url).pathname)
-    let client = env.MY_DURABLE_OBJECT.get(id)
-    if (request.method === 'POST') return new Response('' + (await client.bump()))
-    return new Response('' + (await client.get()))
+    let pathname = new URL(request.url).pathname
+    if (request.method === 'POST') return new Response('do2: bumped do1 worker - returned ' + (await env.MY_DO_WORKER.bump(pathname)))
+    return new Response('do2: called do1 worker - returned ' + (await env.MY_DO_WORKER.get(pathname)))
   },
 } satisfies ExportedHandler<Env>

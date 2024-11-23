@@ -1,19 +1,12 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import MyWorkerWithRPC from '../../worker1/src/index'
+
+interface Env {
+    WORKER1: Service<MyWorkerWithRPC>
+}
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-    const result = await env.WORKER1.add(-1.0000000000001, 68);
-    return new Response(result);
+    const result = await env.WORKER1.add(1, 68);
+    return new Response(`Die antwoord is ${result}`);
 	},
 } satisfies ExportedHandler<Env>;

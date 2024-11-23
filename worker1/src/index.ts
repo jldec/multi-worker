@@ -1,6 +1,9 @@
 import { WorkerEntrypoint } from "cloudflare:workers";
 
-export default class extends WorkerEntrypoint {
+interface Env {
+}
+
+export default class MyWorkerWithRPC extends WorkerEntrypoint<Env> {
   async fetch() { return new Response("Hello from worker1"); }
 
   add(a: number, b: number) {
