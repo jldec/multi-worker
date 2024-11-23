@@ -7,7 +7,7 @@ This repo contains 2 experiments, both using Cloudflare Workers [RPC](https://de
 
 ### worker2
 ```ts
-import MyWorkerWithRPC from '../../worker1/src/index'
+import type MyWorkerWithRPC from '../../worker1/src/index'
 
 interface Env {
   // https://developers.cloudflare.com/workers/runtime-apis/rpc/typescript/
