@@ -7,7 +7,7 @@ interface Env {
 
 
 export class MyDurableObject extends DurableObject<Env> {
-  count: number = 0
+  private count: number = 0
 
   constructor(ctx: DurableObjectState, env: Env) {
     console.log('Constructor MyDurableObject', ctx.id)
@@ -30,7 +30,7 @@ export default class MyDOWorker extends WorkerEntrypoint<Env> {
     super(ctx, env)
   }
 
-  resolve(pathname: string) {
+  private resolve(pathname: string) {
     let id: DurableObjectId = this.env.MY_DURABLE_OBJECT.idFromName(pathname)
     return this.env.MY_DURABLE_OBJECT.get(id)
   }

@@ -1,4 +1,4 @@
-import MyDOWorker from '../../do1/src/index'
+import type MyDOWorker from '../../do1/src/index'
 
 interface Env {
 	MY_DO_WORKER: Service<MyDOWorker>;

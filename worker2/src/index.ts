@@ -1,4 +1,4 @@
-import MyWorkerWithRPC from '../../worker1/src/index'
+import type MyWorkerWithRPC from '../../worker1/src/index'
 
 interface Env {
     WORKER1: Service<MyWorkerWithRPC>
