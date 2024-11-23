@@ -2,9 +2,8 @@ import { DurableObject } from 'cloudflare:workers'
 import { WorkerEntrypoint } from 'cloudflare:workers'
 
 interface Env {
-	MY_DURABLE_OBJECT: DurableObjectNamespace<MyDurableObject>;
+  MY_DURABLE_OBJECT: DurableObjectNamespace<MyDurableObject>
 }
-
 
 export class MyDurableObject extends DurableObject<Env> {
   private count: number = 0
@@ -25,7 +24,6 @@ export class MyDurableObject extends DurableObject<Env> {
 }
 
 export default class MyDOWorker extends WorkerEntrypoint<Env> {
-
   constructor(ctx: ExecutionContext, env: Env) {
     super(ctx, env)
   }
