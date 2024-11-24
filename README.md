@@ -1,9 +1,15 @@
 # multi-worker
-This repo contains 2 experiments, both using Cloudflare Workers [RPC](https://developers.cloudflare.com/workers/runtime-apis/rpc/). Hopefully the various TypeScript signatures are helpful.
 
+This repo contains 2 experiments, both using Cloudflare Workers [RPC](https://developers.cloudflare.com/workers/runtime-apis/rpc/).
 
-# Basic worker-to-worker RPC
-[worker2](worker2/src/index.ts) calls [worker1](worker1/src/index.ts) over RPC without durable objects.
+The goal was see whether multi-worker projects using RPC would also run locally using wrangler dev and miniflare/workerd.
+
+The conclusion as of Nov. 2024 is that worker-to-worker RPC works fine in dev, but worker-to-durable-object RPC only works locally for the durable object host worker, not across different workers. See workers-sdk [issue #5918](https://github.com/cloudflare/workers-sdk/issues/5918) and the **very promising** [PR #7251](https://github.com/cloudflare/workers-sdk/pull/7251) for progress and details.
+
+The 4 directories in this repo are independent wrangler projects. More work is needed to configure a pnpm workspace (or npm/yarn) to share dependencies and type declarations. The code samples below are runnable, and TypeScript interfaces are shared between callers and callees.    
+
+## Basic worker-to-worker RPC
+[worker2](worker2/src/index.ts) calls [worker1](worker1/src/index.ts) over RPC. No durable objects.
 
 ### worker2
 ```ts
@@ -50,13 +56,12 @@ export default class MyWorkerWithRPC extends WorkerEntrypoint<Env> {
 }
 ```
 
-
-# Durable Object RPC
+## Durable Object RPC
 [do2](do2/src/index.ts) calls Durable Object in [do1](do1/src/index.ts) using worker-to-worker RPC.
 
-The reason for the this experiment was to work around a [limitation](https://github.com/cloudflare/workers-sdk/issues/5918) of the current wrangler-miniflare setup, which prevents calling the durable object via RPC from a separate worker (not the durable object "host").
+This additional experiment was motivatec by the current [limitation](https://github.com/cloudflare/workers-sdk/issues/5918) in wrangler & miniflare, which prevents calling the durable object via RPC from a separate worker.
 
-In this case the workaround was to use worker-to-worker RPC to forward RPC calls. The RPC method signatures in the worker require an extra parameter to resolve the durable object instance.
+In this case the workaround is to use worker-to-worker RPC between workers to forward RPC calls. The RPC method signatures in the host worker require an extra parameter to resolve the durable object instance before forwarding the call.
 
 ### do2
 ```ts
