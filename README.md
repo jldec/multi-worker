@@ -59,7 +59,7 @@ export default class MyWorkerWithRPC extends WorkerEntrypoint<Env> {
 ## Durable Object RPC
 [do2](do2/src/index.ts) calls Durable Object in [do1](do1/src/index.ts) using worker-to-worker RPC.
 
-This additional experiment was motivatec by the current [limitation](https://github.com/cloudflare/workers-sdk/issues/5918) in wrangler & miniflare, which prevents calling the durable object via RPC from a separate worker.
+This additional experiment was motivated by a [limitation](https://github.com/cloudflare/workers-sdk/issues/5918) in wrangler & miniflare, which prevents calling the durable object via RPC from a separate worker.
 
 In this case the workaround is to use worker-to-worker RPC between workers to forward RPC calls. The RPC method signatures in the host worker require an extra parameter to resolve the durable object instance before forwarding the call.
 
